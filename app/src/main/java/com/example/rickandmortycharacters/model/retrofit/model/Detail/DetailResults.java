@@ -1,12 +1,11 @@
 package com.example.rickandmortycharacters.model.retrofit.model.Detail;
 
-import com.example.rickandmortycharacters.model.retrofit.model.Detail.Location;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Results {
+public class DetailResults {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -33,11 +32,11 @@ public class Results {
 
     @SerializedName("origin")
     @Expose
-    private Location origin;
+    private DetailLocation origin;
 
     @SerializedName("location")
     @Expose
-    private Location location;
+    private DetailLocation location;
 
     @SerializedName("image")
     @Expose
@@ -79,11 +78,11 @@ public class Results {
         return gender;
     }
 
-    public Location getOrigin() {
+    public DetailLocation getOrigin() {
         return origin;
     }
 
-    public Location getLocation() {
+    public DetailLocation getLocation() {
         return location;
     }
 

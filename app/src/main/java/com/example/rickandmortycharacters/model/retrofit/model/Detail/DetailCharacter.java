@@ -9,17 +9,17 @@ public class DetailCharacter {
 
     @SerializedName("info")
     @Expose
-    private Info info;
+    private DetailInfo info;
 
     @SerializedName("results")
     @Expose
-    private List<Results> results = null;
+    private List<DetailResults> results = null;
 
-    public Info getInfo() {
+    public DetailInfo getInfo() {
         return info;
     }
 
-    public List<Results> getResults() {
+    public List<DetailResults> getResults() {
         return results;
     }
 

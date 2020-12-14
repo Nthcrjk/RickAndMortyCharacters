@@ -3,7 +3,7 @@ package com.example.rickandmortycharacters.model.retrofit.model.Detail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Info {
+public class DetailInfo {
     @SerializedName("count")
     @Expose
     private Integer count;
