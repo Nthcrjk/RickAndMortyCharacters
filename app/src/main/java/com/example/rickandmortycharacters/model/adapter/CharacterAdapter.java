@@ -13,16 +13,17 @@ import androidx.annotation.Nullable;
 
 
 import com.example.rickandmortycharacters.R;
+import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 
 import java.util.List;
 
-public class CharacterAdapter extends ArrayAdapter<CharacterState> {
+public class CharacterAdapter extends ArrayAdapter<CharacterResults> {
 
     private LayoutInflater inflater;
     private int laoyut;
-    private List<CharacterState> characterStates;
+    private List<CharacterResults> characterStates;
 
-    public CharacterAdapter(@NonNull Context context, int resource, @NonNull List<CharacterState> objects) {
+    public CharacterAdapter(@NonNull Context context, int resource, @NonNull List<CharacterResults> objects) {
         super(context, resource, objects);
 
         this.inflater = LayoutInflater.from(context);
@@ -39,10 +40,10 @@ public class CharacterAdapter extends ArrayAdapter<CharacterState> {
         TextView characterName = (TextView) view.findViewById(R.id.character_name);
         TextView characterOrigin = (TextView) view.findViewById(R.id.character_origin);
 
-        CharacterState states = characterStates.get(position);
+        CharacterResults states = characterStates.get(position);
         //ImageView = states.Image
         characterName.setText(states.getName());
-        characterOrigin.setText(states.getOriginName());
+        characterOrigin.setText(states.getOrigin().getName());
 
         return view;
     }

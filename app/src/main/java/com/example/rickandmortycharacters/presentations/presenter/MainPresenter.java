@@ -43,7 +43,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                     @Override
                     public void onNext(@NonNull CharacterList characterList) {
-                        Log.e("meow", characterList.getResults().get(0).getStatus());
+                        getViewState().setAdapter(characterList.getResults());
                     }
 
                     @Override
