@@ -28,7 +28,7 @@ public class CharactersService {
         call.enqueue(new Callback<Character>() {
             @Override
             public void onResponse(Call<Character> call, Response<Character> response) {
-                Log.e(TAG, Integer.toString(response.body().getInfo().getCount()));
+                Log.e(TAG, response.body().getResults().get(1).origin.getUrl());
             }
 
             @Override
