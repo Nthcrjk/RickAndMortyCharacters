@@ -8,51 +8,51 @@ import java.util.List;
 public class Results {
     @SerializedName("id")
     @Expose
-    public Integer id;
+    private Integer id;
 
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
 
     @SerializedName("status")
     @Expose
-    public String status;
+    private String status;
 
     @SerializedName("species")
     @Expose
-    public String species;
+    private String species;
 
     @SerializedName("type")
     @Expose
-    public String type;
+    private String type;
 
     @SerializedName("gender")
     @Expose
-    public String gender;
+    private String gender;
 
     @SerializedName("origin")
     @Expose
-    public Location origin;
+    private Location origin;
 
     @SerializedName("location")
     @Expose
-    public Location location;
+    private Location location;
 
     @SerializedName("image")
     @Expose
-    public String image;
+    private String image;
 
     @SerializedName("episode")
     @Expose
-    public List<String> episode = null;
+    private List<String> episode = null;
 
     @SerializedName("url")
     @Expose
-    public String url;
+    private String url;
 
     @SerializedName("created")
     @Expose
-    public String created;
+    private String created;
 
     public Integer getId() {
         return id;

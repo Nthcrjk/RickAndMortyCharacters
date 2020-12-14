@@ -50,7 +50,7 @@ dependencies {
     //RxJava
     implementation "io.reactivex.rxjava3:rxjava:$rxJava"
     implementation "io.reactivex.rxjava3:rxandroid:3.0.0"
-    
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8"
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"

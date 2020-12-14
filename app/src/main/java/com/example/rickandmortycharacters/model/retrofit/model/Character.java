@@ -13,7 +13,7 @@ public class Character {
 
     @SerializedName("results")
     @Expose
-    public List<Results> results = null;
+    private List<Results> results = null;
 
     public Info getInfo() {
         return info;
@@ -22,5 +22,6 @@ public class Character {
     public List<Results> getResults() {
         return results;
     }
+
 }
 
