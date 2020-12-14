@@ -1,5 +1,6 @@
-package com.example.rickandmortycharacters.model.retrofit.model;
+package com.example.rickandmortycharacters.model.retrofit.model.Detail;
 
+import com.example.rickandmortycharacters.model.retrofit.model.Detail.Location;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -1,10 +1,9 @@
 package com.example.rickandmortycharacters.presentations.presenter;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
-import com.example.rickandmortycharacters.model.retrofit.model.Character;
+import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
 
@@ -31,19 +30,19 @@ public class MainPresenter extends MvpPresenter<MainView> {
         Service service = new Service();
         api = service.getApi();
 
-        Observable<Character> observable = api.getCharacters();
+        Observable<DetailCharacter> observable = api.getDetailCharacters();
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Character>() {
+                .subscribe(new Observer<DetailCharacter>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposables[0] = d;
                     }
 
                     @Override
-                    public void onNext(@NonNull Character character) {
-                        Log.e("meow", character.getResults().get(0).getName());
+                    public void onNext(@NonNull DetailCharacter detailCharacter) {
+                        Log.e("meow", "don't worry, vse horosho");
                     }
 
                     @Override

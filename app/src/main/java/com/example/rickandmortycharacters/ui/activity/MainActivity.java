@@ -1,11 +1,15 @@
 package com.example.rickandmortycharacters.ui.activity;
 
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.example.rickandmortycharacters.R;
+import com.example.rickandmortycharacters.model.adapter.CharacterAdapter;
+import com.example.rickandmortycharacters.model.adapter.CharacterState;
 import com.example.rickandmortycharacters.presentations.presenter.MainPresenter;
 import com.example.rickandmortycharacters.presentations.view.MainView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import moxy.MvpAppCompatActivity;
@@ -23,7 +27,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     }
 
     @Override
-    public void setAdapter() {
-
+    public void setAdapter(List<CharacterState> characters) {
+        CharacterAdapter adapter = new CharacterAdapter(this, R.layout.character_list_item, characters);
     }
 }
