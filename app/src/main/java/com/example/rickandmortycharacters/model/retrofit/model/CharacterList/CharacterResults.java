@@ -23,6 +23,10 @@ public class CharacterResults {
     @Expose
     private CharacterLocation origin;
 
+    @SerializedName("image")
+    @Expose
+    private String image;
+
     public Integer getId() {
         return id;
     }
@@ -37,5 +41,9 @@ public class CharacterResults {
 
     public CharacterLocation getOrigin() {
         return origin;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

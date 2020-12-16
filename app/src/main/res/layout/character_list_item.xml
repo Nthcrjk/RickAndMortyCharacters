@@ -7,13 +7,14 @@
         android:id="@+id/character_image"
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_width="70dp"
-        android:layout_height="50dp" />
+        android:layout_height="85dp"
+        android:layout_width="85dp" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp" >
 
         <TextView
             android:id="@+id/character_name"
@@ -28,4 +29,10 @@
             android:text="Родина" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/character_status"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content"
+        android:text="статус" />
 </LinearLayout>

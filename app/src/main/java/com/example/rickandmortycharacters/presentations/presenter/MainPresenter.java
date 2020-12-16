@@ -1,13 +1,11 @@
 package com.example.rickandmortycharacters.presentations.presenter;
 
-import android.util.Log;
+import android.os.AsyncTask;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
-import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
-
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -23,39 +21,46 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private JsonApi api;
 
-    private final Disposable[] disposables;
 
+    private int numberOfNextPage = 1;
     public MainPresenter(){
-        disposables = new Disposable[1];
 
         Service service = new Service();
         api = service.getApi();
 
-        Observable<CharacterList> observable = api.getCharacterList();
+        new AsyncTask<Void, Void, Void>(){
 
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CharacterList>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        disposables[0] = d;
-                    }
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Observable<CharacterList> obs = api.getCharacterList(1);
 
-                    @Override
-                    public void onNext(@NonNull CharacterList characterList) {
-                        getViewState().setAdapter(characterList.getResults());
-                    }
+                obs.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CharacterList>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
+                            }
 
-                    }
+                            @Override
+                            public void onNext(@NonNull CharacterList characterList) {
+                                getViewState().setAdapter(characterList.getResults());
+                            }
 
-                    @Override
-                    public void onComplete() {
+                            @Override
+                            public void onError(@NonNull Throwable e) {
 
-                    }
-                });
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                numberOfNextPage++;
+                            }
+                        });
+
+                return null;
+            }
+        }.execute();
 
     }
 }

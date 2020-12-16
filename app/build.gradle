@@ -32,6 +32,7 @@ android {
 def moxyVersion = "2.2.0";
 def rxJava = "3.0.8";
 def retrofit = "2.9.0";
+def picasso = "2.5.2";
 
 dependencies {
 
@@ -55,4 +56,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit"
+    //Picasso
+    implementation "com.squareup.picasso:picasso:$picasso"
 }
