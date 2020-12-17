@@ -1,11 +1,16 @@
 package com.example.rickandmortycharacters.presentations.presenter;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
+import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -21,18 +26,22 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private JsonApi api;
 
-
-    private int numberOfNextPage = 1;
+    private int numberOfNextPage = 0;
     public MainPresenter(){
 
         Service service = new Service();
+
         api = service.getApi();
+
+        List<CharacterResults> results = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected Void doInBackground(Void... voids) {
-                Observable<CharacterList> obs = api.getCharacterList(1);
+                Observable<CharacterList> obs = api.getCharacterList(1)
+                        .mergeWith(api.getCharacterList(2));
+
 
                 obs.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -44,7 +53,10 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
-                                getViewState().setAdapter(characterList.getResults());
+                                //getViewState().setAdapter(characterList.getResults());
+                                results.addAll(characterList.getResults());
+                                Log.e("meow", "1");
+                                Log.e("meow", characterList.getResults().get(0).getName());
                             }
 
                             @Override
@@ -54,7 +66,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onComplete() {
-                                numberOfNextPage++;
+                                //numberOfNextPage++;
+                                getViewState().setAdapter(results);
+
                             }
                         });
 

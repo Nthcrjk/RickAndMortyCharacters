@@ -14,15 +14,13 @@ public class Service {
 
     private Retrofit retrofit;
     private JsonApi api;
-    private final Disposable[] disposables;
 
     public JsonApi getApi() {
-        JsonApi api = retrofit.create(JsonApi.class);
+        api = retrofit.create(JsonApi.class);
         return api;
     }
 
     public Service() {
-        disposables = new Disposable[1];
         retrofit = createRetrofit();
     }
 

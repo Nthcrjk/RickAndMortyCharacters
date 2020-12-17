@@ -3,8 +3,11 @@ package com.example.rickandmortycharacters.ui.activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.rickandmortycharacters.R;
 import com.example.rickandmortycharacters.model.adapter.CharacterAdapter;
+import com.example.rickandmortycharacters.model.adapter.NewAdapter;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 import com.example.rickandmortycharacters.presentations.presenter.MainPresenter;
 import com.example.rickandmortycharacters.presentations.view.MainView;
@@ -19,19 +22,19 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
     @InjectPresenter
     MainPresenter presenter;
 
-    ListView characterListView;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        characterListView = (ListView) findViewById(R.id.character_list);
+        recyclerView = (RecyclerView) findViewById(R.id.character_recycle_view);
     }
 
     @Override
     public void setAdapter(List<CharacterResults> characters) {
-        CharacterAdapter adapter = new CharacterAdapter(this, R.layout.character_list_item, characters);
-        characterListView.setAdapter(adapter);
+        NewAdapter adapter = new NewAdapter(this, characters);
+        recyclerView.setAdapter(adapter);
     }
 }
