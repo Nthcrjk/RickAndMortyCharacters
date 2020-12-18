@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickandmortycharacters.R;
@@ -16,21 +17,24 @@ import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.Cha
 import com.example.rickandmortycharacters.presentations.presenter.MainPresenter;
 import com.example.rickandmortycharacters.presentations.view.MainView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
 public class MainActivity extends MvpAppCompatActivity implements MainView {
-    private List<CharacterResults> allLoadedCharacters;
-
     @InjectPresenter
     MainPresenter presenter;
 
     private CharacterAdapter adapter = null;
-
     private RecyclerView recyclerView;
-    private Button button;
+    LinearLayoutManager manager;
+
+    private boolean loading = true;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private List<List<CharacterResults>> listOfListsOfCharacters = new ArrayList<>();
+    private int pagesLoaded = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,31 +42,45 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.character_recycle_view);
+        manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
 
-        button = (Button) findViewById(R.id.button);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0)
+                {
+                    visibleItemCount = manager.getChildCount();
+                    totalItemCount = manager.getItemCount();
+                    pastVisiblesItems = manager.findFirstVisibleItemPosition();
+                    if (loading)
+                    {
+                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
+                        {
+                            loading = false;
+                            Log.e("meow", "presenter.getMew())");
+                            //adapter.getData().add(presenter.getLoadList().get(0));
+                            adapter.getData().addAll(presenter.getLoadList());
+                            adapter.notifyDataSetChanged();
+                            pagesLoaded++;
+
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void setAdapter(List<CharacterResults> characters) {
         if (adapter == null){
+            pagesLoaded++;
             adapter = new CharacterAdapter(this, characters);
             recyclerView.setAdapter(adapter);
-        } else{
-            CharacterDiffUtilCallBack characterDiffUtilCallBack = new CharacterDiffUtilCallBack(adapter.getData(), characters);
-            DiffUtil.DiffResult characterDiffResult = DiffUtil.calculateDiff(characterDiffUtilCallBack);
-            characterDiffResult.dispatchUpdatesTo(adapter);
         }
 
     }
 
-    @Override
-    public void updateAdapter(List<CharacterResults> characters) {
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-            }
-        });
-    }
 
 }

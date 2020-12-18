@@ -13,6 +13,4 @@ public interface MainView extends MvpView {
 
     void setAdapter(List<CharacterResults> characters);
 
-    void updateAdapter(List<CharacterResults> characters);
-
 }

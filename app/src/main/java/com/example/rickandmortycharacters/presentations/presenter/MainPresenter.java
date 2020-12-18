@@ -27,19 +27,76 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private JsonApi api;
 
+    private List<CharacterResults> loadList;
+
     public MainPresenter(){
 
         Service service = new Service();
 
         api = service.getApi();
 
-        List<CharacterResults> results = new ArrayList<>();
-
-        List<CharacterResults> updateResults = new ArrayList<>();
+        loadList = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
+                Observable<CharacterList> startObs = api.getCharacterList(1);
+
+                Observable<CharacterList> mainObs = api.getCharacterList(2);
+                for (int i = 3; i <= 34; i++){
+                    mainObs = mainObs.mergeWith(api.getCharacterList(i));
+                }
+
+                startObs.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CharacterList>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull CharacterList characterList) {
+                                Log.e("meow", "1");
+                                Log.e("meow", characterList.getResults().get(0).getName());
+                                getViewState().setAdapter(characterList.getResults());
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+
+                mainObs.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CharacterList>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull CharacterList characterList) {
+                                loadList.addAll(characterList.getResults());
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
+                /*
                 Observable<CharacterList> mainObs = api.getCharacterList(1);
 
                 for (int i = 2; i <= 2; i++){
@@ -97,9 +154,15 @@ public class MainPresenter extends MvpPresenter<MainView> {
                                 getViewState().setAdapter(results);
                             }
                         });
+
+                 */
                 return null;
             }
         }.execute();
 
+    }
+
+    public List<CharacterResults> getLoadList(){
+        return loadList;
     }
 }
