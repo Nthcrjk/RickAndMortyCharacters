@@ -48,22 +48,20 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0)
-                {
-                    visibleItemCount = manager.getChildCount();
-                    totalItemCount = manager.getItemCount();
-                    pastVisiblesItems = manager.findFirstVisibleItemPosition();
-                    if (loading)
-                    {
-                        if ( (visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            loading = false;
-                            Log.e("meow", "presenter.getMew())");
-                            //adapter.getData().add(presenter.getLoadList().get(0));
-                            adapter.getData().addAll(presenter.getLoadList());
-                            adapter.notifyDataSetChanged();
-                            pagesLoaded++;
-
+                if (pagesLoaded <= 32) {
+                    loading = true;
+                    if (dy > 0) {
+                        visibleItemCount = manager.getChildCount();
+                        totalItemCount = manager.getItemCount();
+                        pastVisiblesItems = manager.findFirstVisibleItemPosition();
+                        if (loading) {
+                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                Log.e("meow", "presenter.getMew())");
+                                adapter.getData().addAll(presenter.getLoadList().get(pagesLoaded));
+                                adapter.notifyDataSetChanged();
+                                pagesLoaded++;
+                                loading = true;
+                            }
                         }
                     }
                 }
@@ -78,9 +76,6 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             adapter = new CharacterAdapter(this, characters);
             recyclerView.setAdapter(adapter);
         }
-
     }
-
-
 
 }

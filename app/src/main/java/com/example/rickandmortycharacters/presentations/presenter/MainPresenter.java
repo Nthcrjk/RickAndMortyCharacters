@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
-import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterLocation;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
@@ -27,7 +26,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private JsonApi api;
 
-    private List<CharacterResults> loadList;
+    private List<List<CharacterResults>> loadlist;
 
     public MainPresenter(){
 
@@ -35,7 +34,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
         api = service.getApi();
 
-        loadList = new ArrayList<>();
+        loadlist = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>(){
             @Override
@@ -83,7 +82,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
-                                loadList.addAll(characterList.getResults());
+                                loadlist.add(characterList.getResults());
                             }
 
                             @Override
@@ -159,10 +158,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
                 return null;
             }
         }.execute();
-
     }
 
-    public List<CharacterResults> getLoadList(){
-        return loadList;
+    public List<List<CharacterResults>> getLoadList(){
+        return loadlist;
     }
 }
