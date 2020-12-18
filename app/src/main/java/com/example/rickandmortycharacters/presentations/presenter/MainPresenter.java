@@ -39,11 +39,18 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                /*
                 Observable<CharacterList> obs = api.getCharacterList(1)
                         .mergeWith(api.getCharacterList(2));
 
+                 */
+                Observable<CharacterList> mainObs = api.getCharacterList(1);
 
-                obs.subscribeOn(Schedulers.io())
+                for (int i = 2; i <= 34; i++){
+                    mainObs = mainObs.mergeWith(api.getCharacterList(i));
+                }
+
+                mainObs.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<CharacterList>() {
                             @Override
@@ -53,7 +60,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
-                                //getViewState().setAdapter(characterList.getResults());
                                 results.addAll(characterList.getResults());
                                 Log.e("meow", "1");
                                 Log.e("meow", characterList.getResults().get(0).getName());
