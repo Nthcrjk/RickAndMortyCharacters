@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickandmortycharacters.R;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
+import com.example.rickandmortycharacters.ui.activity.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -68,12 +69,20 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView characterImage;
         private TextView characterName, characterOrigin, characterStatus;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             characterImage = (ImageView) itemView.findViewById(R.id.character_image);
             characterName = (TextView) itemView.findViewById(R.id.character_name);
             characterOrigin = (TextView) itemView.findViewById(R.id.character_origin);
             characterStatus = (TextView) itemView.findViewById(R.id.character_status);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DetailActivity.start(inflater.getContext());
+                }
+            });
         }
     }
 }

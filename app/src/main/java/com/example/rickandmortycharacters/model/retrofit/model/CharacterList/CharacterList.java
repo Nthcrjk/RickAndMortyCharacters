@@ -19,4 +19,8 @@ public class CharacterList {
     public List<CharacterResults> getResults() {
         return results;
     }
+
+    public CharacterInfo getInfo() {
+        return info;
+    }
 }

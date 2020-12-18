@@ -29,11 +29,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private CharacterAdapter adapter = null;
     private RecyclerView recyclerView;
-    LinearLayoutManager manager;
+    private LinearLayoutManager manager;
 
     private boolean loading = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
-    private List<List<CharacterResults>> listOfListsOfCharacters = new ArrayList<>();
     private int pagesLoaded = 0;
 
     @Override
@@ -56,11 +55,9 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                         pastVisiblesItems = manager.findFirstVisibleItemPosition();
                         if (loading) {
                             if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                Log.e("meow", "presenter.getMew())");
                                 adapter.getData().addAll(presenter.getLoadList().get(pagesLoaded));
                                 adapter.notifyDataSetChanged();
                                 pagesLoaded++;
-                                loading = true;
                             }
                         }
                     }

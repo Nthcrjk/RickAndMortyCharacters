@@ -9,6 +9,7 @@ import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.Cha
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.InjectViewState;
 import moxy.MvpPresenter;
+import retrofit2.Call;
 
 @InjectViewState
 public class MainPresenter extends MvpPresenter<MainView> {
@@ -31,18 +33,26 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public MainPresenter(){
 
         Service service = new Service();
-
         api = service.getApi();
-
         loadlist = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
+                int countOfPages = 0;
+                Call<CharacterList> infoOfPages = api.getInfo(1);
+                try {
+                    countOfPages = infoOfPages.execute().body().getInfo().getPages();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("meow", Integer.toString(countOfPages));
+
                 Observable<CharacterList> startObs = api.getCharacterList(1);
 
                 Observable<CharacterList> mainObs = api.getCharacterList(2);
-                for (int i = 3; i <= 34; i++){
+                for (int i = 3; i <= countOfPages; i++){
                     mainObs = mainObs.mergeWith(api.getCharacterList(i));
                 }
 
@@ -95,66 +105,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             }
                         });
-                /*
-                Observable<CharacterList> mainObs = api.getCharacterList(1);
-
-                for (int i = 2; i <= 2; i++){
-                    mainObs = mainObs.mergeWith(api.getCharacterList(i));
-                }
-
-                Observable<CharacterList> updateObs = api.getCharacterList(3);
-
-                updateObs.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<CharacterList>() {
-                            @Override
-                            public void onSubscribe(@NonNull Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(@NonNull CharacterList characterList) {
-                                getViewState().updateAdapter(characterList.getResults());
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
-
-                mainObs.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<CharacterList>() {
-                            @Override
-                            public void onSubscribe(@NonNull Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(@NonNull CharacterList characterList) {
-                                results.addAll(characterList.getResults());
-                                Log.e("meow", "1");
-                                Log.e("meow", characterList.getResults().get(0).getName());
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                getViewState().setAdapter(results);
-                            }
-                        });
-
-                 */
                 return null;
             }
         }.execute();
