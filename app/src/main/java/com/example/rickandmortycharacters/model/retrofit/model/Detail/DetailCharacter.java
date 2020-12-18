@@ -6,22 +6,91 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class DetailCharacter {
-
-    @SerializedName("info")
+    @SerializedName("id")
     @Expose
-    private DetailInfo info;
+    private int id;
 
-    @SerializedName("results")
+    @SerializedName("name")
     @Expose
-    private List<DetailResults> results = null;
+    private String name;
 
-    public DetailInfo getInfo() {
-        return info;
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+    @SerializedName("species")
+    @Expose
+    private String species;
+
+    @SerializedName("type")
+    @Expose
+    private String type;
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
+
+    @SerializedName("origin")
+    @Expose
+    private DetailLocation origin;
+
+    @SerializedName("location")
+    @Expose
+    private DetailLocation location;
+
+    @SerializedName("image")
+    @Expose
+    private String image;
+
+    @SerializedName("episode")
+    @Expose
+    private List<String> episode;
+
+    @SerializedName("created")
+    @Expose
+    private String created;
+
+    public int getId() {
+        return id;
     }
 
-    public List<DetailResults> getResults() {
-        return results;
+    public String getName() {
+        return name;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public DetailLocation getOrigin() {
+        return origin;
+    }
+
+    public DetailLocation getLocation() {
+        return location;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public List<String> getEpisode() {
+        return episode;
+    }
+
+    public String getCreated() {
+        return created;
+    }
 }
-

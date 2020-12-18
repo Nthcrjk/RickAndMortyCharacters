@@ -4,10 +4,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
+import com.example.rickandmortycharacters.model.retrofit.model.CharacterInfo.CharacterInfo;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
+import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
+import com.example.rickandmortycharacters.ui.activity.DetailActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +43,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
             @Override
             protected Void doInBackground(Void... voids) {
                 int countOfPages = 0;
-                Call<CharacterList> infoOfPages = api.getInfo(1);
+                Call<CharacterInfo> infoOfPages = api.getInfo(1);
                 try {
                     countOfPages = infoOfPages.execute().body().getInfo().getPages();
                 } catch (IOException e) {
@@ -113,4 +116,5 @@ public class MainPresenter extends MvpPresenter<MainView> {
     public List<List<CharacterResults>> getLoadList(){
         return loadlist;
     }
+
 }

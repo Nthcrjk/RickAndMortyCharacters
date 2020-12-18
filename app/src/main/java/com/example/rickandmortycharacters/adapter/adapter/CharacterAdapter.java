@@ -2,6 +2,7 @@ package com.example.rickandmortycharacters.adapter.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickandmortycharacters.R;
+import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
+import com.example.rickandmortycharacters.model.retrofit.service.Service;
+import com.example.rickandmortycharacters.presentations.presenter.DetailPresenter;
 import com.example.rickandmortycharacters.ui.activity.DetailActivity;
 import com.squareup.picasso.Picasso;
 
+import java.io.Console;
 import java.util.List;
 
 public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.ViewHolder> {
@@ -45,7 +50,11 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull CharacterAdapter.ViewHolder holder, int position) {
+        Log.e("obBindViewHolder", Integer.toString(position));
         CharacterResults state = states.get(position);
+
+        holder.bind(state.getId());
+
         holder.characterName.setText(state.getName());
         holder.characterOrigin.setText(state.getOrigin().getName());
         holder.characterStatus.setText(state.getStatus());
@@ -59,6 +68,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
                 holder.characterStatus.setTextColor(Color.rgb(0,0, 0));
             }
         Picasso.with(inflater.getContext()).load(state.getImage()).into(holder.characterImage);
+
     }
 
     @Override
@@ -67,6 +77,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private String characterId;
         private ImageView characterImage;
         private TextView characterName, characterOrigin, characterStatus;
 
@@ -80,9 +91,12 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DetailActivity.start(inflater.getContext());
+                    DetailPresenter.start(inflater.getContext(), characterId);
                 }
             });
+        }
+        public void bind(int id){
+            characterId = Integer.toString(id);
         }
     }
 }

@@ -1,10 +1,7 @@
 package com.example.rickandmortycharacters.model.retrofit.model.CharacterList;
 
-import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailLocation;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class CharacterResults {
     @SerializedName("id")
