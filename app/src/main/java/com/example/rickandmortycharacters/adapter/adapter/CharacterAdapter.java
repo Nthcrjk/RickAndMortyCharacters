@@ -1,4 +1,4 @@
-package com.example.rickandmortycharacters.model.adapter;
+package com.example.rickandmortycharacters.adapter.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,6 +25,14 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
     public CharacterAdapter(Context context, List<CharacterResults> states){
         this.inflater = LayoutInflater.from(context);
         this.states = states;
+    }
+
+    public void setStates(List<CharacterResults> states) {
+        this.states = states;
+    }
+
+    public List<CharacterResults> getData(){
+        return states;
     }
 
     @NonNull

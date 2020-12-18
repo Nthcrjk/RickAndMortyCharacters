@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
+import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterLocation;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.MainView;
@@ -26,7 +27,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
     private JsonApi api;
 
-    private int numberOfNextPage = 0;
     public MainPresenter(){
 
         Service service = new Service();
@@ -35,20 +35,42 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
         List<CharacterResults> results = new ArrayList<>();
 
-        new AsyncTask<Void, Void, Void>(){
+        List<CharacterResults> updateResults = new ArrayList<>();
 
+        new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
-                /*
-                Observable<CharacterList> obs = api.getCharacterList(1)
-                        .mergeWith(api.getCharacterList(2));
-
-                 */
                 Observable<CharacterList> mainObs = api.getCharacterList(1);
 
-                for (int i = 2; i <= 34; i++){
+                for (int i = 2; i <= 2; i++){
                     mainObs = mainObs.mergeWith(api.getCharacterList(i));
                 }
+
+                Observable<CharacterList> updateObs = api.getCharacterList(3);
+
+                updateObs.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CharacterList>() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(@NonNull CharacterList characterList) {
+                                getViewState().updateAdapter(characterList.getResults());
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
 
                 mainObs.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -72,12 +94,9 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onComplete() {
-                                //numberOfNextPage++;
                                 getViewState().setAdapter(results);
-
                             }
                         });
-
                 return null;
             }
         }.execute();

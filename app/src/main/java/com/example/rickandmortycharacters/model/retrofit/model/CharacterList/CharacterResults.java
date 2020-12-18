@@ -46,4 +46,25 @@ public class CharacterResults {
     public String getImage() {
         return image;
     }
+
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setOrigin(CharacterLocation origin) {
+        this.origin = origin;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
