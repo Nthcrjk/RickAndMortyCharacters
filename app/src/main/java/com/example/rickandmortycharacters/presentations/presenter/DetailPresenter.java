@@ -61,12 +61,10 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                                 String id;
 
                                 id = detailCharacter.getOrigin().getUrl().replace(deleteString, "");
-                                Log.e("meow", "repOr " + id);
                                 getViewState().startOriginActivity(id);
 
                                 id = detailCharacter.getLocation().getUrl().replace(deleteString, "");
                                 getViewState().startLocationActivity(id);
-                                Log.e("meow", "repLoc " + id);
 
                                 Observable<EpisodeItem> episodeItemObservable = null;
                                 deleteString = "https://rickandmortyapi.com/api/episode/";

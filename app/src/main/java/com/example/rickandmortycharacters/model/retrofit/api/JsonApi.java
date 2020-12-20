@@ -4,6 +4,7 @@ import com.example.rickandmortycharacters.model.retrofit.model.CharacterInfo.Cha
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
 import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
+import com.example.rickandmortycharacters.model.retrofit.model.DetailEpisode.DetailEpisode;
 import com.example.rickandmortycharacters.model.retrofit.model.DetailLocation.DetailLocation;
 import com.example.rickandmortycharacters.model.retrofit.model.EpisodItem.EpisodeItem;
 
@@ -30,8 +31,12 @@ public interface JsonApi {
     @GET("episode/{id}")
     Observable<EpisodeItem> getEpisodeById(@Path("id") String id);
 
+    @GET("episode/{id}")
+    Observable<DetailEpisode> getDetailEpisodeById(@Path("id") String id);
+
     @GET("location/{id}")
     Observable<DetailLocation> getLocationById(@Path("id") String id);
+
 
 
 

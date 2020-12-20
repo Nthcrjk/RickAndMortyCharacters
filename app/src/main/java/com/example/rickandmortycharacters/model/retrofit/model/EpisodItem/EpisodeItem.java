@@ -6,15 +6,15 @@ import com.google.gson.annotations.SerializedName;
 public class EpisodeItem {
     @SerializedName("id")
     @Expose
-    private int id;
+    protected int id;
 
     @SerializedName("air_date")
     @Expose
-    private String air_date;
+    protected String air_date;
 
     @SerializedName("episode")
     @Expose
-    private String episode;
+    protected String episode;
 
     public int getId() {
         return id;

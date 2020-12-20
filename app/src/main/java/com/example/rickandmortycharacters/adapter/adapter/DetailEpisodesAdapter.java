@@ -1,6 +1,7 @@
 package com.example.rickandmortycharacters.adapter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickandmortycharacters.R;
 import com.example.rickandmortycharacters.model.retrofit.model.EpisodItem.EpisodeItem;
+import com.example.rickandmortycharacters.presentations.presenter.DetailEpisodePresenter;
 
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class DetailEpisodesAdapter extends RecyclerView.Adapter<DetailEpisodesAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //START new ACTIVITY BY idOfEpisode
+                    DetailEpisodePresenter.start(inflater.getContext(), Integer.toString(idOfEpisode));
                 }
             });
         }
