@@ -33,6 +33,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private boolean loading = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private int countOfPages;
     private int pagesLoaded = 0;
 
     @Override
@@ -47,7 +48,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (pagesLoaded <= 32) {
+                if (pagesLoaded <= countOfPages) {
                     loading = true;
                     if (dy > 0) {
                         visibleItemCount = manager.getChildCount();
@@ -73,6 +74,11 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
             adapter = new CharacterAdapter(this, characters);
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void setCountOfpage(int pages) {
+        countOfPages = pages;
     }
 
 }

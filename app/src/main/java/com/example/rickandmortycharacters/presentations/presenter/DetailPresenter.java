@@ -27,9 +27,12 @@ import moxy.MvpPresenter;
 @InjectViewState
 public class DetailPresenter extends MvpPresenter<DetailView> {
 
-    private static final String EXTRA = "EXTRA_ID";
-    static Intent intent;
+    private static final String MAIN_EXTRA = "EXTRA_MY_ID";
+
+    private static Intent myIntent;
+
     private JsonApi api;
+
     List<EpisodeItem> episodeItems;
 
     public DetailPresenter(){
@@ -39,12 +42,12 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
         episodeItems = new ArrayList<>();
 
 
-        Log.e("CharacterId", intent.getStringExtra(EXTRA));
+        Log.e("CharacterId", myIntent.getStringExtra(MAIN_EXTRA));
         new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected Void doInBackground(Void... voids) {
-                Observable<DetailCharacter> observable = api.getCharacterById(intent.getStringExtra(EXTRA));
+                Observable<DetailCharacter> observable = api.getDetailCharacterById(myIntent.getStringExtra(MAIN_EXTRA));
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<DetailCharacter>() {
@@ -52,20 +55,30 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                             public void onSubscribe(@NonNull Disposable d) {
 
                             }
-
                             @Override
                             public void onNext(@NonNull DetailCharacter detailCharacter) {
+                                String deleteString = "https://rickandmortyapi.com/api/location/";
+                                String id;
+
+                                id = detailCharacter.getOrigin().getUrl().replace(deleteString, "");
+                                Log.e("meow", "repOr " + id);
+                                getViewState().startOriginActivity(id);
+
+                                id = detailCharacter.getLocation().getUrl().replace(deleteString, "");
+                                getViewState().startLocationActivity(id);
+                                Log.e("meow", "repLoc " + id);
+
                                 Observable<EpisodeItem> episodeItemObservable = null;
-                                String deleteString = "https://rickandmortyapi.com/api/episode/";
+                                deleteString = "https://rickandmortyapi.com/api/episode/";
                                 String episodeIdTemp = "";
                                 for (int i = 0; i < detailCharacter.getEpisode().size(); i++){
                                     episodeIdTemp = detailCharacter.getEpisode().get(i);
                                     episodeIdTemp = episodeIdTemp.replace(deleteString, "");
 
                                     if (episodeItemObservable == null){
-                                        episodeItemObservable = api.getEpisode(episodeIdTemp);
+                                        episodeItemObservable = api.getEpisodeById(episodeIdTemp);
                                     } else {
-                                        episodeItemObservable = episodeItemObservable.mergeWith(api.getEpisode(episodeIdTemp));
+                                        episodeItemObservable = episodeItemObservable.mergeWith(api.getEpisodeById(episodeIdTemp));
                                     }
                                 }
                                 episodeItemObservable.subscribeOn(Schedulers.io())
@@ -78,7 +91,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
                                             @Override
                                             public void onNext(@NonNull EpisodeItem episodeItem) {
-                                                Log.e("gaf ", "gaf " + episodeItem.getEpisode());
+                                                Log.e("Episode ", "Episode: " + episodeItem.getEpisode());
                                                 episodeItems.add(episodeItem);
                                             }
 
@@ -116,8 +129,8 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     }
 
     public static void start(Context caller, String chatacterId){
-        intent = new Intent(caller, DetailActivity.class);
-        intent.putExtra(EXTRA, chatacterId);
-        caller.startActivity(intent);
+        myIntent = new Intent(caller, DetailActivity.class);
+        myIntent.putExtra(MAIN_EXTRA, chatacterId);
+        caller.startActivity(myIntent);
     }
 }

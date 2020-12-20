@@ -28,7 +28,6 @@ public class DetailEpisodesAdapter extends RecyclerView.Adapter<DetailEpisodesAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.e("gaf", "onCreatedViewHolder");
         View view = inflater.inflate(R.layout.episode_item, parent, false);
         return new ViewHolder(view);
     }
@@ -36,7 +35,6 @@ public class DetailEpisodesAdapter extends RecyclerView.Adapter<DetailEpisodesAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EpisodeItem state = states.get(position);
-        Log.e("gaf", "onBindViewHolder");
         holder.bind(state.getId());
         holder.episode.setText(state.getEpisode());
         holder.air_date.setText(state.getAir_date());
@@ -53,7 +51,6 @@ public class DetailEpisodesAdapter extends RecyclerView.Adapter<DetailEpisodesAd
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            Log.e("gaf", "ViewHolder");
             episode = (TextView) itemView.findViewById(R.id.episode_name);
             air_date = (TextView) itemView.findViewById(R.id.episode_air_date);
 

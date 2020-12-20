@@ -32,11 +32,11 @@ public class DetailCharacter {
 
     @SerializedName("origin")
     @Expose
-    private DetailLocation origin;
+    private DetailCharacterLocation origin;
 
     @SerializedName("location")
     @Expose
-    private DetailLocation location;
+    private DetailCharacterLocation location;
 
     @SerializedName("image")
     @Expose
@@ -74,11 +74,11 @@ public class DetailCharacter {
         return gender;
     }
 
-    public DetailLocation getOrigin() {
+    public DetailCharacterLocation getOrigin() {
         return origin;
     }
 
-    public DetailLocation getLocation() {
+    public DetailCharacterLocation getLocation() {
         return location;
     }
 

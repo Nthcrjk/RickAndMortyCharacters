@@ -1,9 +1,8 @@
 package com.example.rickandmortycharacters.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,22 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rickandmortycharacters.R;
 import com.example.rickandmortycharacters.adapter.adapter.DetailEpisodesAdapter;
-import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
 import com.example.rickandmortycharacters.model.retrofit.model.EpisodItem.EpisodeItem;
-import com.example.rickandmortycharacters.model.retrofit.service.Service;
+import com.example.rickandmortycharacters.presentations.presenter.DetailLocationPresenter;
 import com.example.rickandmortycharacters.presentations.presenter.DetailPresenter;
 import com.example.rickandmortycharacters.presentations.view.DetailView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import moxy.MvpAppCompatActivity;
 import moxy.presenter.InjectPresenter;
 
@@ -37,7 +29,7 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
     @InjectPresenter
     DetailPresenter presenter;
 
-    private static final String EXTRA = "ID_EXTRA";
+    Context myContext;
 
     private DetailEpisodesAdapter adapter = null;
     private LinearLayoutManager manager;
@@ -51,8 +43,9 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acrivity_detail);
 
-        detailImage = (ImageView) findViewById(R.id.detail_image);
+        myContext = this;
 
+        detailImage = (ImageView) findViewById(R.id.detail_image);
         detailName = (TextView) findViewById(R.id.detail_name);
         detailOrigin = (TextView) findViewById(R.id.detail_origin);
         detailLocation = (TextView) findViewById(R.id.detail_location);
@@ -81,10 +74,29 @@ public class DetailActivity extends MvpAppCompatActivity implements DetailView {
 
     @Override
     public void setEpisodeAdapter(List<EpisodeItem> episodes) {
-        Log.e("gaf", "meow " + episodes.get(0).getEpisode());
         if (adapter == null){
             adapter = new DetailEpisodesAdapter(this, episodes);
             episodeRecyclerView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void startOriginActivity(String id) {
+        detailOrigin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailLocationPresenter.start(myContext, id);
+            }
+        });
+    }
+
+    @Override
+    public void startLocationActivity(String id) {
+        detailLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailLocationPresenter.start(myContext, id);
+            }
+        });
     }
 }

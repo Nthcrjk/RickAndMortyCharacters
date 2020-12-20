@@ -15,4 +15,8 @@ public interface DetailView extends MvpView {
     void showDetail(DetailCharacter detailCharacter);
 
     void setEpisodeAdapter(List<EpisodeItem> episodes);
+
+    void startOriginActivity(String id);
+
+    void startLocationActivity(String id);
 }

@@ -50,7 +50,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     e.printStackTrace();
                 }
 
-                Log.e("meow", Integer.toString(countOfPages));
+                Log.e("PagesCount", Integer.toString(countOfPages));
 
                 Observable<CharacterList> startObs = api.getCharacterList(1);
 
@@ -69,8 +69,6 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
-                                Log.e("meow", "1");
-                                Log.e("meow", characterList.getResults().get(0).getName());
                                 getViewState().setAdapter(characterList.getResults());
                             }
 

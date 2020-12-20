@@ -1,6 +1,7 @@
 package com.example.rickandmortycharacters.presentations.view;
 
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterResults;
+import com.example.rickandmortycharacters.model.retrofit.model.DetailLocation.DetailLocation;
 
 import java.util.List;
 
@@ -8,10 +9,11 @@ import moxy.MvpView;
 import moxy.viewstate.strategy.AddToEndSingleStrategy;
 import moxy.viewstate.strategy.StateStrategyType;
 
+
 @StateStrategyType(AddToEndSingleStrategy.class)
-public interface MainView extends MvpView {
+public interface DetailLocationView extends MvpView {
 
-    void setAdapter(List<CharacterResults> characters);
-    void setCountOfpage(int pages);
+    void showLocation(DetailLocation detailLocation);
 
+    void setCharacterAdapter(List<CharacterResults> characterResults);
 }
