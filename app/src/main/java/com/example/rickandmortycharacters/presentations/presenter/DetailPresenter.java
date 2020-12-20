@@ -7,9 +7,13 @@ import android.util.Log;
 
 import com.example.rickandmortycharacters.model.retrofit.api.JsonApi;
 import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
+import com.example.rickandmortycharacters.model.retrofit.model.EpisodItem.EpisodeItem;
 import com.example.rickandmortycharacters.model.retrofit.service.Service;
 import com.example.rickandmortycharacters.presentations.view.DetailView;
 import com.example.rickandmortycharacters.ui.activity.DetailActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -26,15 +30,17 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
     private static final String EXTRA = "EXTRA_ID";
     static Intent intent;
     private JsonApi api;
+    List<EpisodeItem> episodeItems;
 
     public DetailPresenter(){
         Service service = new Service();
         api = service.getApi();
 
-        Log.e("gaf", "dsds");
-        Log.e("gaf", intent.getStringExtra(EXTRA));
-        new AsyncTask<Void, Void, Void>(){
+        episodeItems = new ArrayList<>();
 
+
+        Log.e("CharacterId", intent.getStringExtra(EXTRA));
+        new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected Void doInBackground(Void... voids) {
@@ -49,6 +55,43 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
                             @Override
                             public void onNext(@NonNull DetailCharacter detailCharacter) {
+                                Observable<EpisodeItem> episodeItemObservable = null;
+                                String deleteString = "https://rickandmortyapi.com/api/episode/";
+                                String episodeIdTemp = "";
+                                for (int i = 0; i < detailCharacter.getEpisode().size(); i++){
+                                    episodeIdTemp = detailCharacter.getEpisode().get(i);
+                                    episodeIdTemp = episodeIdTemp.replace(deleteString, "");
+
+                                    if (episodeItemObservable == null){
+                                        episodeItemObservable = api.getEpisode(episodeIdTemp);
+                                    } else {
+                                        episodeItemObservable = episodeItemObservable.mergeWith(api.getEpisode(episodeIdTemp));
+                                    }
+                                }
+                                episodeItemObservable.subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new Observer<EpisodeItem>() {
+                                            @Override
+                                            public void onSubscribe(@NonNull Disposable d) {
+
+                                            }
+
+                                            @Override
+                                            public void onNext(@NonNull EpisodeItem episodeItem) {
+                                                Log.e("gaf ", "gaf " + episodeItem.getEpisode());
+                                                episodeItems.add(episodeItem);
+                                            }
+
+                                            @Override
+                                            public void onError(@NonNull Throwable e) {
+
+                                            }
+
+                                            @Override
+                                            public void onComplete() {
+                                                getViewState().setEpisodeAdapter(episodeItems);
+                                            }
+                                        });
                                 getViewState().showDetail(detailCharacter);
                             }
 
@@ -62,9 +105,14 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
                             }
                         });
+
                 return null;
             }
         }.execute();
+    }
+
+    public List<EpisodeItem> getEpisodeItems(){
+        return episodeItems;
     }
 
     public static void start(Context caller, String chatacterId){

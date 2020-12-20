@@ -3,6 +3,7 @@ package com.example.rickandmortycharacters.model.retrofit.api;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterInfo.CharacterInfo;
 import com.example.rickandmortycharacters.model.retrofit.model.CharacterList.CharacterList;
 import com.example.rickandmortycharacters.model.retrofit.model.Detail.DetailCharacter;
+import com.example.rickandmortycharacters.model.retrofit.model.EpisodItem.EpisodeItem;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Call;
@@ -20,4 +21,7 @@ public interface JsonApi {
 
     @GET("character/{id}")
     Observable<DetailCharacter> getCharacterById(@Path("id") String id);
+
+    @GET("episode/{id}")
+    Observable<EpisodeItem> getEpisode(@Path("id") String id);
 }
