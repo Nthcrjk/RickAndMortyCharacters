@@ -50,6 +50,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     e.printStackTrace();
                 }
 
+                getViewState().setCountOfpage(countOfPages);
+
                 Log.e("PagesCount", Integer.toString(countOfPages));
 
                 Observable<CharacterList> startObs = api.getCharacterList(1);

@@ -48,7 +48,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (pagesLoaded <= countOfPages) {
+                if (pagesLoaded <= countOfPages - 2) {
                     loading = true;
                     if (dy > 0) {
                         visibleItemCount = manager.getChildCount();
@@ -56,6 +56,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                         pastVisiblesItems = manager.findFirstVisibleItemPosition();
                         if (loading) {
                             if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+
                                 adapter.getData().addAll(presenter.getLoadList().get(pagesLoaded));
                                 adapter.notifyDataSetChanged();
                                 pagesLoaded++;
