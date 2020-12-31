@@ -42,6 +42,8 @@ public class MainPresenter extends MvpPresenter<MainView> {
         new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... voids) {
+
+                //Штука которая считает сколько страниц нужно обработать
                 int countOfPages = 0;
                 Call<CharacterInfo> infoOfPages = api.getInfo(1);
                 try {
@@ -50,16 +52,18 @@ public class MainPresenter extends MvpPresenter<MainView> {
                     e.printStackTrace();
                 }
 
+                //Заполняем количество страниц в MainActivity
                 getViewState().setCountOfpage(countOfPages);
 
                 Log.e("PagesCount", Integer.toString(countOfPages));
 
+                //Ovservable с персонажами
                 Observable<CharacterList> startObs = api.getCharacterList(1);
-
                 Observable<CharacterList> mainObs = api.getCharacterList(2);
                 for (int i = 3; i <= countOfPages; i++){
                     mainObs = mainObs.mergeWith(api.getCharacterList(i));
                 }
+
 
                 startObs.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +75,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
+                                //Создаем адаптер с первыми персонажами
                                 getViewState().setAdapter(characterList.getResults());
                             }
 
@@ -95,6 +100,7 @@ public class MainPresenter extends MvpPresenter<MainView> {
 
                             @Override
                             public void onNext(@NonNull CharacterList characterList) {
+                                //Заполняем массив с loadList - массив массивов с персонажами, используем его заменяя информацию в адаптере
                                 loadlist.add(characterList.getResults());
                             }
 

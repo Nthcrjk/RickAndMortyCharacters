@@ -59,7 +59,7 @@ public class DetailEpisodePresenter extends MvpPresenter<DetailEpisodeView> {
                                 String tempId;
 
                                 Observable<CharacterResults> mainObs = null;
-
+                                //Та же система, что и ранее.
                                 for (int i = 0; i < detailEpisode.getCharacters().size(); i++){
                                     tempId = detailEpisode.getCharacters().get(i).replace(deleteString, "");
                                     if (mainObs == null){

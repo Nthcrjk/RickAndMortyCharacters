@@ -33,7 +33,10 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
 
     private boolean loading = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
+
+    // Количество страниц, которое необходимо, для загрузки
     private int countOfPages;
+    // Количество загруженных страниц
     private int pagesLoaded = 0;
 
     @Override
@@ -45,6 +48,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
 
+        //onScrolled - отслеживает оверскролл вниз, догружает новые данные из тмассива loadList в презентере
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -56,7 +60,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
                         pastVisiblesItems = manager.findFirstVisibleItemPosition();
                         if (loading) {
                             if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-
+                                //Вытаскивает из презентера соответствующий странице массив с персонажами
                                 adapter.getData().addAll(presenter.getLoadList().get(pagesLoaded));
                                 adapter.notifyDataSetChanged();
                                 pagesLoaded++;
@@ -68,6 +72,8 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         });
     }
 
+    //Метод, который требует список из characters, создает адаптер, если его не было
+    //
     @Override
     public void setAdapter(List<CharacterResults> characters) {
         if (adapter == null){
@@ -77,6 +83,7 @@ public class MainActivity extends MvpAppCompatActivity implements MainView {
         }
     }
 
+    //Метод, который необходим для заполнения countOfPages
     @Override
     public void setCountOfpage(int pages) {
         countOfPages = pages;

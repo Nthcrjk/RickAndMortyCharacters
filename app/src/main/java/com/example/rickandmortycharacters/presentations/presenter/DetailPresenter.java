@@ -41,7 +41,6 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
         episodeItems = new ArrayList<>();
 
-
         Log.e("CharacterId", myIntent.getStringExtra(MAIN_EXTRA));
         new AsyncTask<Void, Void, Void>(){
 
@@ -57,6 +56,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                             }
                             @Override
                             public void onNext(@NonNull DetailCharacter detailCharacter) {
+                                //Вытаскиваю ссылку удаляю из нее #deleteString, остается id - те номер страницы с location, на его основе создаю Observable
                                 String deleteString = "https://rickandmortyapi.com/api/location/";
                                 String id;
 
@@ -66,9 +66,13 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                                 id = detailCharacter.getLocation().getUrl().replace(deleteString, "");
                                 getViewState().startLocationActivity(id);
 
+
+                                //То же самое, что и с  "https://rickandmortyapi.com/api/location/" вытаскиваю из строки id
                                 Observable<EpisodeItem> episodeItemObservable = null;
                                 deleteString = "https://rickandmortyapi.com/api/episode/";
                                 String episodeIdTemp = "";
+
+                                //В этом цикле объединяю все observable
                                 for (int i = 0; i < detailCharacter.getEpisode().size(); i++){
                                     episodeIdTemp = detailCharacter.getEpisode().get(i);
                                     episodeIdTemp = episodeIdTemp.replace(deleteString, "");
@@ -90,6 +94,7 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
                                             @Override
                                             public void onNext(@NonNull EpisodeItem episodeItem) {
                                                 Log.e("Episode ", "Episode: " + episodeItem.getEpisode());
+                                                //Складываю в список все эпизоды
                                                 episodeItems.add(episodeItem);
                                             }
 
@@ -100,9 +105,11 @@ public class DetailPresenter extends MvpPresenter<DetailView> {
 
                                             @Override
                                             public void onComplete() {
+                                                //Список закидываю в адаптер
                                                 getViewState().setEpisodeAdapter(episodeItems);
                                             }
                                         });
+                                //Информацию о персонаже закидываю вывожу на экран
                                 getViewState().showDetail(detailCharacter);
                             }
 

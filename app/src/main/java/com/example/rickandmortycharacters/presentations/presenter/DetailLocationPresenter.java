@@ -54,13 +54,14 @@ public class DetailLocationPresenter extends MvpPresenter<DetailLocationView> {
 
                             @Override
                             public void onNext(@NonNull DetailLocation detailLocation) {
+                                //Вывожу информацию о локации
                                 getViewState().showLocation(detailLocation);
 
                                 String deleteString = "https://rickandmortyapi.com/api/character/";
                                 String tempId;
 
                                 Observable<CharacterResults> mainObs = null;
-
+                                //вытаскиваю Id всех персонажей, живущих в локации, объединяю их в 1 Observable
                                 for (int i = 0; i < detailLocation.getResidents().size(); i++){
                                     tempId = detailLocation.getResidents().get(i).replace(deleteString, "");
                                     if (mainObs == null){
